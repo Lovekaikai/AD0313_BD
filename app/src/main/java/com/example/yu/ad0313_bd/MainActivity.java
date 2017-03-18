@@ -13,6 +13,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         mMapView = (TextureMapView) findViewById(R.id.bmapView);
         //获得定位的控件。
         baiduMap = mMapView.getMap();
+        //让“我”可以显示在地图中。(感觉会有个小圆点。)
+        baiduMap.setMyLocationEnabled(true);
         //声明LocationClient类
         mLocationClient = new LocationClient(getApplicationContext());
         //配置参数。
@@ -234,12 +237,12 @@ public class MainActivity extends AppCompatActivity {
             isFirstLocate = false;
         }
 
-//        //让地图随着移动设备位置的改变而改变。也就是定位到使用者的具体位置或者是准确位置。
-//        MyLocationData.Builder LocationBuilder = new MyLocationData.Builder();
-//        LocationBuilder.latitude(location.getLatitude());
-//        LocationBuilder.longitude(location.getLongitude());
-//        MyLocationData locationData = LocationBuilder.build();
-//        baiduMap.setMyLocationData(locationData);
+        //让地图随着移动设备位置的改变而改变。也就是定位到使用者的具体位置或者是准确位置。
+        MyLocationData.Builder LocationBuilder = new MyLocationData.Builder();
+        LocationBuilder.latitude(location.getLatitude());
+        LocationBuilder.longitude(location.getLongitude());
+        MyLocationData locationData = LocationBuilder.build();
+        baiduMap.setMyLocationData(locationData);
 
     }
 
