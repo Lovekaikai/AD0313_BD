@@ -1,8 +1,11 @@
 package com.example.yu.ad0313_bd;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -11,12 +14,17 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
     public BDLocationListener myListener = new MyLocationListener();
     private BaiduMap baiduMap;
     private boolean isFirstLocate = true;
+    private Button Btn_Search;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
+
     }
+
+
 
     private void initViews() {
         //获取地图控件引用
@@ -55,7 +71,56 @@ public class MainActivity extends AppCompatActivity {
         //定位开始
         mLocationClient.start();
 
+
+        Btn_Search = (Button) findViewById(R.id.Btn_Search);
+        Btn_Search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        getLocation();
+
+
+
+
     }
+
+    private void getLocation() {
+        Intent intent = getIntent();
+        if(intent != null){
+            ArrayList<String> location = intent.getStringArrayListExtra("location");
+            if(location != null){
+                showLocation(location);
+            }
+        }
+    }
+
+
+
+    private void showLocation(ArrayList<String> location) {
+       for(int i = 0; i < location.size(); i++){
+            LatLng point = new LatLng(Double.parseDouble(location.get(i)),Double.parseDouble(location.get(i + 1)));
+
+            //构建Marker图标
+            BitmapDescriptor bitmap = BitmapDescriptorFactory
+                    .fromResource(R.drawable.y);
+            //构建MarkerOption，用于在地图上添加Marker
+            OverlayOptions option = new MarkerOptions()
+                    .position(point)
+                    .icon(bitmap);
+            //在地图上添加Marker，并显示
+            baiduMap.addOverlay(option);
+            i++;
+        }
+    }
+
+
+
+
 
     @Override
     protected void onDestroy() {
@@ -63,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mMapView.onDestroy();
         mLocationClient.stop();
+
     }
     @Override
     protected void onResume() {
