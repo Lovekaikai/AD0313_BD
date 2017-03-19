@@ -57,6 +57,10 @@
 
         <activity android:name=".SearchActivity">
         </activity>
+        <activity android:name=".BNDemoMainActivity">
+        </activity>
+        <activity android:name=".BNDemoGuideActivity">
+        </activity>
     </application>
 
 </manifest>

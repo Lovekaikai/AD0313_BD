@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private BaiduMap baiduMap;
     private boolean isFirstLocate = true;
     private Button Btn_Search;
-
+    private Button another_page;
 
 
 
@@ -86,6 +86,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        another_page = (Button) findViewById(R.id.another_page);
+        another_page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,BNDemoMainActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
